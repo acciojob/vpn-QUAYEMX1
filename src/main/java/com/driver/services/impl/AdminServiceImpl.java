@@ -40,21 +40,15 @@ public class AdminServiceImpl implements AdminService {
     public Admin addServiceProvider(int adminId, String providerName) {
           Admin admin=adminRepository1.findById(adminId).get();
 
-//          if(admin==null){
-//              throw new Exception("Admin Id is invalid");
-//          }
+
           ServiceProvider serviceProvider=new ServiceProvider();
           serviceProvider.setName(providerName);
-//          serviceProvider=serviceProviderRepository1.save(serviceProvider);
-
-
-        List<ServiceProvider> serviceProviderList=admin.getServiceProviders();
-        if(serviceProviderList==null){
-            serviceProviderList=new ArrayList<>();
-        }
           serviceProvider.setAdmin(admin);
+
+
+         List<ServiceProvider> serviceProviderList=admin.getServiceProviders();
          serviceProviderList.add(serviceProvider);
-          admin.setServiceProviders(serviceProviderList);
+         admin.setServiceProviders(serviceProviderList);
 
 
           admin=adminRepository1.save(admin);
