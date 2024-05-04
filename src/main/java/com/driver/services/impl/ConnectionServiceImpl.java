@@ -33,11 +33,42 @@ public class ConnectionServiceImpl implements ConnectionService {
            return user;
        }
 
+       boolean flg=false;
+       int minId=Integer.MAX_VALUE;
+       ServiceProvider serviceProvider1=null;
+       Country country1=null;
+       for(ServiceProvider serviceProvider:serviceProviderList){
+           List<Country>countryList=serviceProvider.getCountryList();
+           for(Country country:countryList){
+               if(countryName.equals(country.getCountryName().toString()) && serviceProvider.getId()<minId){
+                   minId=serviceProvider.getId();
+                   serviceProvider1=serviceProvider;
+                   country1=country;
+                   flg=true;
 
+               }
+           }
+       }
 
+       if(flg==false){
+           throw new Exception("Unable to connect");
+       }
 
+       user.setMaskedIp(new String(country1.getCode()+"."+serviceProvider1.getId()+"."+userId));
+       user.setOriginalCountry(country1);
 
-      return null;
+       serviceProvider1.getUsers().add(user);
+
+       Connection connection=new Connection();
+       connection.setUser(user);
+       connection.setServiceProvider(serviceProvider1);
+
+       serviceProvider1.getConnectionList().add(connection);
+
+       serviceProviderRepository2.save(serviceProvider1);
+
+       return user;
+
     }
     @Override
     public User disconnect(int userId) throws Exception {
