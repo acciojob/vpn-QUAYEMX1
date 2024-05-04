@@ -37,6 +37,10 @@ public class AdminServiceImpl implements AdminService {
     public Admin addServiceProvider(int adminId, String providerName) {
           Admin admin=adminRepository1.findById(adminId).get();
 
+          if(admin==null){
+              return null;
+          }
+
           ServiceProvider serviceProvider=new ServiceProvider();
           serviceProvider.setName(providerName);
 //          serviceProvider=serviceProviderRepository1.save(serviceProvider);
