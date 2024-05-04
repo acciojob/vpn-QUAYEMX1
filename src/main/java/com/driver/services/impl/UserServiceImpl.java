@@ -27,10 +27,8 @@ public class UserServiceImpl implements UserService {
         User user=new User();
         user.setPassword(password);
         user.setUsername(username);
+        user.setConnected(false);
         user.setMaskedIp(null);
-        user.setConnected(true);
-
-
 
         Country country=new Country();
         if(!countryName.equalsIgnoreCase("ind") && !countryName.equalsIgnoreCase("aus") && !countryName.equalsIgnoreCase("usa")
@@ -63,9 +61,12 @@ public class UserServiceImpl implements UserService {
         country.setCode(countryCode);
         country.setServiceProvider(null);
 
-//        user.setOriginalIp(countryCode); i have doubt in it
-
+        user.setOriginalCountry(country);
         user=userRepository3.save(user);
+
+        user.setOriginalIp(new String(countryCode+"."+user.getId()));
+
+        userRepository3.save(user);
 
         return user;
     }

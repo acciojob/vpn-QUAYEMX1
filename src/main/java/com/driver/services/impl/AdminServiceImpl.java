@@ -53,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
 
           adminRepository1.save(admin);
 
-         return admin;
+          return admin;
     }
 
     @Override
