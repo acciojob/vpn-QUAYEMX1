@@ -11,7 +11,7 @@ public class Country{
     private int CountryId;
 
     private CountryName countryName;
-    private String countryCode;
+    private String code;
 
     @JoinColumn
     @OneToOne
@@ -29,9 +29,9 @@ public class Country{
 
     public void setCountryName(CountryName countryName){this.countryName=countryName;}
 
-    public String getCountryCode(){return countryCode;}
+    public String getCode(){return code;}
 
-    public void setCountryCode(String countryCode){this.countryCode=countryCode;}
+    public void setCode(String countryCode){this.code=code;}
 
     public User getUser(){return user;}
 

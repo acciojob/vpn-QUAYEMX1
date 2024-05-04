@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
         country.setCountryName(countryName1);
         country.setUser(user);
-        country.setCountryCode(countryCode);
+        country.setCode(countryCode);
         country.setServiceProvider(null);
 
 //        user.setOriginalIp(countryCode); i have doubt in it
