@@ -1,6 +1,8 @@
 package com.driver.services.impl;
 
 import com.driver.model.Admin;
+import com.driver.model.Country;
+import com.driver.model.CountryName;
 import com.driver.model.ServiceProvider;
 import com.driver.repository.AdminRepository;
 import com.driver.repository.CountryRepository;
@@ -44,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
 
           admin=adminRepository1.save(admin);
 
-        return null;
+        return admin;
     }
 
     @Override
@@ -57,9 +59,36 @@ public class AdminServiceImpl implements AdminService {
             throw new Exception("Country not found");
         }
 
+        CountryName countryName1=null;
+        String countryCode=null;
+        if(countryName.equalsIgnoreCase("ind")){
+            countryName1=CountryName.IND;
+            countryCode=CountryName.IND.toCode();
+        }else if(countryName.equalsIgnoreCase("aus")){
+            countryName1=CountryName.AUS;
+            countryCode=CountryName.AUS.toCode();
+        }else if(countryName.equalsIgnoreCase("usa")){
+            countryName1=CountryName.USA;
+            countryCode=CountryName.USA.toCode();
+        }else if(countryName.equalsIgnoreCase("chi")){
+            countryName1=CountryName.CHI;
+            countryCode=CountryName.CHI.toCode();
+        }else{
+            countryName1=CountryName.JPN;
+            countryCode=CountryName.JPN.toCode();
+        }
 
+        Country country=new Country();
+        country.setCountryName(countryName1);
+        country.setUser(null);
+        country.setCountryCode(countryCode);
+        country.setServiceProvider(serviceProvider);
 
+        serviceProvider.getCountryList().add(country);
 
-        return null;
+        serviceProvider=serviceProviderRepository1.save(serviceProvider);
+//        countryRepository1.save(country);
+        return serviceProvider;
+
     }
 }
