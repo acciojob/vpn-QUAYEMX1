@@ -11,6 +11,9 @@ import com.driver.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
@@ -37,16 +40,22 @@ public class AdminServiceImpl implements AdminService {
     public Admin addServiceProvider(int adminId, String providerName) {
           Admin admin=adminRepository1.findById(adminId).get();
 
-          if(admin==null){
-              return null;
-          }
-
+//          if(admin==null){
+//              throw new Exception("Admin Id is invalid");
+//          }
           ServiceProvider serviceProvider=new ServiceProvider();
           serviceProvider.setName(providerName);
 //          serviceProvider=serviceProviderRepository1.save(serviceProvider);
 
-          admin.getServiceProviders().add(serviceProvider);
+
+        List<ServiceProvider> serviceProviderList=admin.getServiceProviders();
+        if(serviceProviderList==null){
+            serviceProviderList=new ArrayList<>();
+        }
           serviceProvider.setAdmin(admin);
+         serviceProviderList.add(serviceProvider);
+          admin.setServiceProviders(serviceProviderList);
+
 
           admin=adminRepository1.save(admin);
 
