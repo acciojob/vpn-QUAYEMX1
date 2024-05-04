@@ -24,11 +24,15 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         User user=userRepository2.findById(userId).get();
 
+        if(user.getMaskedIp()!=null){
+            throw new Exception("Already connected");
+        }
+
         List<ServiceProvider>serviceProviderList=user.getServiceProviderList();
 
-       if(serviceProviderList.size()>0){
-           throw new Exception("Already connected");
-       }
+//       if(serviceProviderList.size()>0){
+//           throw new Exception("Already connected");
+//       }
        if(countryName.equalsIgnoreCase(user.getOriginalCountry().getCountryName().toString())){
            return user;
        }
@@ -86,7 +90,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         user.setConnected(false);
 
         userRepository2.save(user);
-      return user;
+        return user;
     }
     @Override
     public User communicate(int senderId, int receiverId) throws Exception {
