@@ -33,7 +33,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin addServiceProvider(int adminId, String providerName) {
-         Admin admin=adminRepository1.findById(adminId).get();
+          Admin admin=adminRepository1.findById(adminId).get();
 
           ServiceProvider serviceProvider=new ServiceProvider();
           serviceProvider.setName(providerName);
@@ -49,6 +49,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ServiceProvider addCountry(int serviceProviderId, String countryName) throws Exception{
+
+        ServiceProvider serviceProvider=serviceProviderRepository1.findById(serviceProviderId).get();
+
+        if(!countryName.equalsIgnoreCase("ind") && !countryName.equalsIgnoreCase("aus") && !countryName.equalsIgnoreCase("usa")
+        && !countryName.equalsIgnoreCase("chi") && !countryName.equalsIgnoreCase("jpn")){
+            throw new Exception("Country not found");
+        }
+
+
+
+
         return null;
     }
 }
