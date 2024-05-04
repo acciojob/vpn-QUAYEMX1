@@ -51,9 +51,9 @@ public class AdminServiceImpl implements AdminService {
          admin.setServiceProviders(serviceProviderList);
 
 
-          admin=adminRepository1.save(admin);
+          adminRepository1.save(admin);
 
-        return admin;
+         return admin;
     }
 
     @Override
