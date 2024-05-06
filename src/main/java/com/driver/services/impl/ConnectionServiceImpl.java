@@ -23,58 +23,54 @@ public class ConnectionServiceImpl implements ConnectionService {
     public User connect(int userId, String countryName) throws Exception{
 
         User user=userRepository2.findById(userId).get();
-
         if(user.getMaskedIp()!=null){
             throw new Exception("Already connected");
         }
+        if(user.getOriginalCountry().toString().equalsIgnoreCase(countryName)){
+            return user;
+        }
+
 
         List<ServiceProvider>serviceProviderList=user.getServiceProviderList();
-
-       if(countryName.equalsIgnoreCase(user.getOriginalCountry().getCountryName().toString())){
-           return user;
-       }
-
-       boolean flg=false;
-       int minId=Integer.MAX_VALUE;
-       ServiceProvider serviceProvider1=null;
-       Country country1=null;
-       for(ServiceProvider serviceProvider:serviceProviderList){
-           List<Country>countryList=serviceProvider.getCountryList();
-           for(Country country:countryList){
-               if(countryName.equalsIgnoreCase(country.getCountryName().toString()) && serviceProvider.getId()<minId){
-                   minId=serviceProvider.getId();
-                   serviceProvider1=serviceProvider;
-                   country1=country;
-                   flg=true;
-
-               }
-           }
-       }
-
-       if(flg==false){
-           throw new Exception("Unable to connect");
-       }
-
-       user.setMaskedIp(new String(country1.getCode()+"."+serviceProvider1.getId()+"."+userId));
-       user.setOriginalCountry(country1);
-       user.setConnected(true);
+        ServiceProvider serviceProvider=null;
+        boolean flg=false;
+        Country country=null;
+        int minId=Integer.MAX_VALUE;
+        for(ServiceProvider serviceProvider1:serviceProviderList){
+            List<Country>countryList=serviceProvider1.getCountryList();
+            for(Country country1:countryList){
+                if(country1.toString().equalsIgnoreCase(countryName) && minId>serviceProvider1.getId()){
+                    flg=true;
+                    serviceProvider=serviceProvider1;
+                    country=country1;
+                    minId=serviceProvider1.getId();
+                }
+            }
+        }
 
 
-       Connection connection=new Connection();
-       connection.setUser(user);
-       connection.setServiceProvider(serviceProvider1);
+
+        if(flg==false){
+            throw new Exception("Unable to connect");
+        }
+
+        user.setConnected(true);
+        // "updatedCountryCode.serviceProviderId.userId"
+        user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+user.getId());
+
+        Connection connection=new Connection();
+        connection.setUser(user);
+        connection.setServiceProvider(serviceProvider);
 
         user.getConnectionList().add(connection);
-
-//        serviceProvider1.getUsers().add(user);
-        serviceProvider1.getConnectionList().add(connection);
+        serviceProvider.getConnectionList().add(connection);
 
         userRepository2.save(user);
-       serviceProviderRepository2.save(serviceProvider1);
+        serviceProviderRepository2.save(serviceProvider);
 
-       return user;
-
+        return user;
     }
+
     @Override
     public User disconnect(int userId) throws Exception {
 
