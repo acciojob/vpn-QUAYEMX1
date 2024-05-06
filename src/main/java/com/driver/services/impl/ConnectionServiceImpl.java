@@ -65,12 +65,16 @@ public class ConnectionServiceImpl implements ConnectionService {
         Connection connection=new Connection();
         connection.setUser(user);
         connection.setServiceProvider(serviceProvider);
+        connection=connectionRepository2.save(connection);
 
         user.getConnectionList().add(connection);
         serviceProvider.getConnectionList().add(connection);
 
         userRepository2.save(user);
         serviceProviderRepository2.save(serviceProvider);
+
+//        user.getConnectionList().add(connection);
+//        userRepository2.save(user);
 
         return user;
     }
@@ -85,6 +89,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         user.setConnected(false);
         user.setMaskedIp(null);
+
         List<Connection>connectionList=user.getConnectionList();
         for(Connection connection:connectionList){
             if(connection.getUser().equals(user)){
@@ -97,6 +102,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
     @Override
     public User communicate(int senderId, int receiverId) throws Exception {
+
 
 
         return null;
