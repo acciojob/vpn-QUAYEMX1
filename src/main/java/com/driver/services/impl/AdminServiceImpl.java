@@ -32,6 +32,8 @@ public class AdminServiceImpl implements AdminService {
         admin.setUsername(username);
         admin.setPassword(password);
 
+        admin.setServiceProviders(new ArrayList<>());
+
         adminRepository1.save(admin);
         return admin;
     }
