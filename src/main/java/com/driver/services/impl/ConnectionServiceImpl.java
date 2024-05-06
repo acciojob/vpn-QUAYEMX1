@@ -56,13 +56,15 @@ public class ConnectionServiceImpl implements ConnectionService {
             throw new Exception("Unable to connect");
         }
 
+        Connection connection=new Connection();
+        connection.setUser(user);
+        connection.setServiceProvider(serviceProvider);
+
         user.setConnected(true);
         // "updatedCountryCode.serviceProviderId.userId"
         user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+userId);
 
-        Connection connection=new Connection();
-        connection.setUser(user);
-        connection.setServiceProvider(serviceProvider);
+
 
         user.getConnectionList().add(connection);
         serviceProvider.getConnectionList().add(connection);
