@@ -26,7 +26,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if(user.getMaskedIp()!=null){
             throw new Exception("Already connected");
         }
-        if(countryName.equalsIgnoreCase(user.getOriginalCountry().toString())){
+        if(countryName.equalsIgnoreCase(user.getOriginalCountry().getCountryName().toString())){
             return user;
         }
 
@@ -44,7 +44,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         for(ServiceProvider serviceProvider1:serviceProviderList){
             List<Country>countryList=serviceProvider1.getCountryList();
             for(Country country1:countryList){
-                if(countryName.equalsIgnoreCase(country1.toString()) && minId>serviceProvider1.getId()){
+                if(countryName.equalsIgnoreCase(country1.getCountryName().toString()) && minId>serviceProvider1.getId()){
                     flg=true;
                     serviceProvider=serviceProvider1;
                     country=country1;
@@ -65,7 +65,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         Connection connection=new Connection();
         connection.setUser(user);
         connection.setServiceProvider(serviceProvider);
-        connectionRepository2.save(connection);
+        connection=connectionRepository2.save(connection);
 
         user.getConnectionList().add(connection);
         serviceProvider.getConnectionList().add(connection);
