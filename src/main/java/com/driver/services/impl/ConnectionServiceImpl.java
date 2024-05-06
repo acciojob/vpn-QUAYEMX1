@@ -33,19 +33,19 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         List<ServiceProvider>serviceProviderList=user.getServiceProviderList();
 
-//        if(serviceProviderList==null){
-//            throw new Exception("Unable to connect");
-//        }
+        if(serviceProviderList==null){
+            throw new Exception("Unable to connect");
+        }
 
         ServiceProvider serviceProvider=null;
-        boolean flg=false;
+//        boolean flg=false;
         Country country=null;
         int minId=Integer.MAX_VALUE;
         for(ServiceProvider serviceProvider1:serviceProviderList){
             List<Country>countryList=serviceProvider1.getCountryList();
             for(Country country1:countryList){
                 if(countryName.equalsIgnoreCase(country1.getCountryName().toString()) && minId>serviceProvider1.getId()){
-                    flg=true;
+//                    flg=true;
                     serviceProvider=serviceProvider1;
                     country=country1;
                     minId=serviceProvider1.getId();
@@ -53,9 +53,9 @@ public class ConnectionServiceImpl implements ConnectionService {
             }
         }
 
-        if(flg==false){
-            throw new Exception("Unable to connect");
-        }
+//        if(flg==false){
+//            throw new Exception("Unable to connect");
+//        }
 
 
         user.setConnected(true);
